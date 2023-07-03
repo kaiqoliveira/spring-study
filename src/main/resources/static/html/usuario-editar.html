@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Usuário Novo</title>
+	<title>Usuário Editar</title>
 
 	<link rel="stylesheet" 
 		href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
@@ -15,47 +15,74 @@
 	
 	<script>
 
-		$(document).ready( 
-			function() {
+$(document).ready(function() {
 
-				
-                $("#botaoGravar").click( function () {
-                
-                    var dadosFormulario = new FormData( $("#formUsuario").get(0) );
-                    var usuarioJson = Object.fromEntries( dadosFormulario.entries() );
+var idUsuario = getUrlParameter("idUsuario");
+//console.log("idUsuario:" + idUsuario);
 
-                    var endpoint = "http://localhost:8080/usuario/";
+var endpoint = "http://localhost:8080/usuario/" + idUsuario;
 
-                    var apiHeader = {
-                        method: 'POST',
-                        body: JSON.stringify(usuarioJson),
-                        headers: {'Content-Type': 'application/json; charset=UTF-8'}
-                    };
-                
-                    fetch( endpoint, apiHeader )
-                        .then( function (resposta) {
-                            if (resposta.ok) {
-                                
-                                $("#nome").val('');
-                                $("#idade").val('');
-                                $("#email").val('');
-                                $("#cpf").val('');
-                                $("#foto").val('');
-                                $("#senha").val('');
+var apiHeaderGet = {
+    method: 'GET',
+    headers: {'Content-type': 'application/json'}
+};
 
-                                alert('Usuário cadastrado com sucesso');
-                            } else {
-                                alert('Não foi possível cadastrar o usuário (' + resposta.status +')');
-                            }       
-                        });
-
-                });
+fetch( endpoint , apiHeaderGet)
+    .then( response => response.json() )
+    .then( data => {
+        $("#idUsuario").val(data.idUsuario);
+        $("#nome").val(data.nome);
+        $("#idade").val(data.idade);
+        $("#email").val(data.email);
+        $("#cpf").val(data.cpf);
+        $("#foto").val(data.foto);
+        $("#senha").val(data.senha);
+    })
+    .catch(erro => alert('Não foi possível alterar os dados do usuário'));
 
 
-				
-			}
-		);
-			
+    $("#botaoGravar").click( function () {
+    
+        var dadosFormulario = new FormData( $("#formUsuario").get(0) );
+        var usuarioJson = Object.fromEntries( dadosFormulario.entries() );
+
+        var cabecalho = {
+            method: 'PUT',
+            body: JSON.stringify(usuarioJson),
+            headers: {'Content-Type': 'application/json; charset=UTF-8'}
+        };
+    
+        fetch( endpoint, cabecalho ) //send dos dados API
+            .then( function (resposta) {
+                if ( resposta.ok) {
+                    alert('Usuário alterado com sucesso');
+                } else {
+                    alert('Não foi possível alterar o usuário (' + resposta.status +')');
+                }       
+            });
+
+    });    
+
+    
+});
+
+
+var getUrlParameter = function getUrlParameter(sParam) {
+var sPageURL = window.location.search.substring(1),
+    sURLVariables = sPageURL.split('&'),
+    sParameterName,
+    i;
+
+for (i = 0; i < sURLVariables.length; i++) {
+    sParameterName = sURLVariables[i].split('=');
+
+    if (sParameterName[0] === sParam) {
+        return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+    }
+}
+return false;
+};
+
 	</script>
 
 </head>
@@ -90,7 +117,7 @@
             </div>
               
             <button type="button" id="botaoGravar" class="btn btn-primary btn-lg" style="margin-top: 10px;">Gravar</button>  
-            
+
           </form>
     </div>
 

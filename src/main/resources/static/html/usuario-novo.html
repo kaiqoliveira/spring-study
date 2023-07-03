@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Usuário Lista</title>
+	<title>Usuário Novo</title>
 
 	<link rel="stylesheet" 
 		href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
@@ -34,7 +34,7 @@
                 
                     fetch( endpoint, apiHeader )
                         .then( function (resposta) {
-                            if ( resposta.ok) {
+                            if (resposta.ok) {
                                 
                                 $("#nome").val('');
                                 $("#idade").val('');
@@ -86,11 +86,11 @@
               
             <div class="form-group">
                 <label for="senha">Senha:</label>
-                <input type="text" class="form-control" id="senha" name="senha" placeholder="">
+                <input type="password" class="form-control" id="senha" name="senha" placeholder="">
             </div>
               
             <button type="button" id="botaoGravar" class="btn btn-primary btn-lg" style="margin-top: 10px;">Gravar</button>  
-
+            
           </form>
     </div>
 
